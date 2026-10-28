@@ -1,5 +1,7 @@
 # cfq-tunnel
 
+![cfq-tunnel banner](docs/banner.svg)
+
 Keeps a Cloudflare quick tunnel (`*.trycloudflare.com`) in front of a self-hosted service and tells the rest of your stack where it went every time the address changes.
 
 Quick tunnels need no Cloudflare account and no domain, and they are fast. Their weakness is the address: it is random and it changes whenever `cloudflared` restarts. cfq-tunnel runs `cloudflared`, checks your service through the tunnel, starts a fresh tunnel when the old one dies, and publishes each new address to Vercel Edge Config, a webhook, a file or a shell hook.
