@@ -95,11 +95,14 @@ git clone https://github.com/mr-ceo7/cfq-tunnel && cd cfq-tunnel && ./install.sh
 ## Quick Start
 
 ```bash
-# Serve something
-python3 -m http.server 8000 --bind 127.0.0.1 &
+# Fastest way: tunnel a local port in one command (just like ngrok)
+cfq-tunnel http 3000
 
-# Tunnel it, write the address to a file, and run a hook whenever it changes
-cfq-tunnel run --url http://127.0.0.1:8000 \
+# Or simply:
+cfq-tunnel 3000
+
+# Tunnel with publishers (write to file & run a hook on address change)
+cfq-tunnel http 8000 \
   --write-file ~/.cache/my-app-url \
   --on-change 'echo "now at $CFQ_URL"'
 ```
@@ -112,6 +115,9 @@ cfq-tunnel run --url http://127.0.0.1:8000 \
 Kill the `cloudflared` process and watch a new address get published about 15 seconds later.
 
 ## Commands
+
+### `cfq-tunnel http <port-or-url>`
+Runs a tunnel pointing to a local port or URL (e.g. `cfq-tunnel http 3000` or `cfq-tunnel 3000`). Accepts all the same options as `run`.
 
 ### `cfq-tunnel run`
 

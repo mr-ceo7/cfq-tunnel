@@ -45,3 +45,40 @@ def test_systemd_unit(capsys):
 def test_systemd_needs_run_options():
     with pytest.raises(SystemExit):
         cli.main(["systemd"])
+
+
+def test_normalize_target_url():
+    assert cli.normalize_target_url("3000") == "http://127.0.0.1:3000"
+    assert cli.normalize_target_url("8080") == "http://127.0.0.1:8080"
+    assert cli.normalize_target_url("localhost:3000") == "http://localhost:3000"
+    assert cli.normalize_target_url("http://127.0.0.1:9000") == "http://127.0.0.1:9000"
+    assert cli.normalize_target_url("https://example.com") == "https://example.com"
+
+
+def test_http_subcommand_dispatch(monkeypatch):
+    recorded_settings = []
+
+    class DummyWatchdog:
+        def __init__(self, settings, publishers):
+            recorded_settings.append(settings)
+
+        def stop(self, *a):
+            pass
+
+        def run(self):
+            pass
+
+    monkeypatch.setattr(cli, "Watchdog", DummyWatchdog)
+
+    # Test "http 3000"
+    cli.main(["http", "3000"])
+    assert recorded_settings[-1].origin == "http://127.0.0.1:3000"
+
+    # Test shorthand "3000"
+    cli.main(["3000"])
+    assert recorded_settings[-1].origin == "http://127.0.0.1:3000"
+
+    # Test "http http://localhost:8080"
+    cli.main(["http", "http://localhost:8080"])
+    assert recorded_settings[-1].origin == "http://localhost:8080"
+
