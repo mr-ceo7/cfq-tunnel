@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cfq-tunnel"
+version = "1.0.0"
+description = "Keep a Cloudflare quick tunnel alive and publish its changing address to Vercel Edge Config, webhooks, files or hooks"
+readme = "README.md"
+authors = [
+    { name = "mr-ceo7" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = ["cloudflare", "cloudflared", "quick-tunnel", "trycloudflare", "vercel", "edge-config", "watchdog", "self-hosting"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Topic :: Internet :: Proxy Servers",
+    "Topic :: System :: Systems Administration"
+]
+
+[project.scripts]
+cfq-tunnel = "cfq_tunnel.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mr-ceo7/cfq-tunnel"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cfq_tunnel*"]
